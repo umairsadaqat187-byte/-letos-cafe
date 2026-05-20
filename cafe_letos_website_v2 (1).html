@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Leto's - The Taste of Shahdara | Lahore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --primary-dark: #b71c1c;
+            --accent: #ff6f00;
+            --yellow: #ffc107;
+            --yellow-light: #fff8e1;
+            --yellow-bright: #ffd54f;
+            --dark: #1a1a1a;
+            --darker: #111;
+            --light: #fffde7;
+            --cream: #fff8e1;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--light); color: var(--text); overflow-x: hidden; }
+        h1, h2, h3, .section-title { font-family: 'Playfair Display', serif; }
+
+        .navbar {
+            position: fixed; top: 0; width: 100%; background: rgba(26,26,26,0.95);
+            backdrop-filter: blur(15px); z-index: 1000; padding: 12px 0;
+            transition: all 0.3s; border-bottom: 3px solid var(--yellow);
+        }
+        .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 25px; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--yellow); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--yellow); font-size: 28px; }
+        .logo span { color: var(--white); }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 15px; transition: all 0.3s; position: relative; padding: 5px 0; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 3px; background: var(--yellow); transition: width 0.3s; border-radius: 2px; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--yellow); }
+        .mobile-menu { display: none; color: var(--yellow); font-size: 26px; cursor: pointer; }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(26,26,26,0.85) 0%, rgba(211,47,47,0.75) 50%, rgba(255,193,7,0.3) 100%), 
+                        url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1920');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 120px 20px 60px; position: relative;
+        }
+        .hero-content { max-width: 900px; }
+        .hero-badge {
+            display: inline-block; background: var(--yellow); color: var(--dark);
+            padding: 8px 25px; border-radius: 50px; font-weight: 700; font-size: 14px;
+            margin-bottom: 25px; animation: fadeInDown 0.8s ease;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .hero-content h1 { font-size: 80px; color: white; margin-bottom: 15px; text-shadow: 3px 3px 15px rgba(0,0,0,0.5); animation: fadeInUp 1s ease; line-height: 1.1; }
+        .hero-content h1 span { color: var(--yellow); }
+        .hero-content .tagline { font-size: 26px; color: var(--yellow-bright); margin-bottom: 25px; font-weight: 400; animation: fadeInUp 1s ease 0.2s both; letter-spacing: 3px; }
+        .rating-badge {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.15); padding: 12px 30px;
+            border-radius: 50px; color: white; margin-bottom: 35px;
+            animation: fadeInUp 1s ease 0.4s both;
+            backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
+        }
+        .rating-badge .stars { color: var(--yellow); }
+        .rating-badge strong { color: var(--yellow); font-size: 22px; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; animation: fadeInUp 1s ease 0.6s both; }
+
+        .btn { padding: 16px 40px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; border: none; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: var(--yellow); color: var(--dark); box-shadow: 0 5px 25px rgba(255,193,7,0.4); }
+        .btn-primary:hover { background: var(--yellow-bright); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255,193,7,0.5); }
+        .btn-outline { background: transparent; color: white; border: 2px solid var(--yellow); }
+        .btn-outline:hover { background: var(--yellow); color: var(--dark); transform: translateY(-3px); }
+
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--yellow); font-size: 24px; animation: bounce 2s infinite; }
+
+        .info-bar { background: var(--dark); color: white; padding: 25px 0; border-top: 4px solid var(--yellow); }
+        .info-container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; padding: 0 25px; }
+        .info-item { display: flex; align-items: center; gap: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s; }
+        .info-item:hover { background: rgba(255,193,7,0.1); transform: translateY(-2px); }
+        .info-item i { font-size: 22px; color: var(--yellow); width: 35px; }
+        .info-item span { font-size: 14px; opacity: 0.9; line-height: 1.4; }
+
+        .section { padding: 100px 25px; max-width: 1300px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 48px; color: var(--dark); margin-bottom: 10px; }
+        .section-header p { color: var(--text-light); font-size: 18px; max-width: 600px; margin: 0 auto; }
+        .yellow-bar { width: 80px; height: 4px; background: var(--yellow); margin: 20px auto; border-radius: 2px; }
+
+        .food-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 60px; }
+        .gallery-item { position: relative; border-radius: 20px; overflow: hidden; height: 280px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 30px 20px 20px; color: white; }
+        .gallery-overlay h4 { font-size: 18px; margin-bottom: 5px; }
+        .gallery-overlay span { color: var(--yellow); font-weight: 600; }
+        .gallery-item.large { grid-column: span 2; grid-row: span 2; height: 100%; }
+
+        .menu-categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; }
+        .menu-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.08); transition: all 0.4s; border: 2px solid transparent; }
+        .menu-card:hover { transform: translateY(-8px); box-shadow: 0 25px 60px rgba(0,0,0,0.15); border-color: var(--yellow); }
+        .menu-card-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px 30px; position: relative; overflow: hidden; }
+        .menu-card-header::before { content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px; background: rgba(255,193,7,0.2); border-radius: 50%; }
+        .menu-card-header h3 { font-size: 26px; position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+        .menu-card-header i { font-size: 28px; color: var(--yellow); }
+        .menu-items { padding: 25px 30px; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px dashed #eee; transition: all 0.2s; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: var(--yellow-light); margin: 0 -30px; padding-left: 30px; padding-right: 30px; }
+        .item-name { font-weight: 600; color: var(--text); font-size: 16px; }
+        .item-price { font-weight: 800; color: var(--primary); font-size: 17px; white-space: nowrap; }
+        .item-desc { font-size: 13px; color: var(--text-light); margin-top: 3px; }
+
+        .pizza-section { background: white; border-radius: 24px; padding: 40px; box-shadow: 0 15px 50px rgba(0,0,0,0.08); margin-bottom: 35px; border: 2px solid var(--yellow-light); }
+        .pizza-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        .pizza-table th { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 18px; text-align: left; font-weight: 600; font-size: 15px; }
+        .pizza-table th:first-child { border-radius: 12px 0 0 0; }
+        .pizza-table th:last-child { border-radius: 0 12px 0 0; }
+        .pizza-table td { padding: 16px 18px; border-bottom: 1px solid #f0f0f0; }
+        .pizza-table tr:hover td { background: var(--yellow-light); }
+        .pizza-table .price { color: var(--primary); font-weight: 700; }
+
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .deal-card { background: linear-gradient(145deg, #fff 0%, var(--yellow-light) 100%); border-radius: 24px; padding: 35px; position: relative; overflow: hidden; border: 3px solid transparent; transition: all 0.4s; }
+        .deal-card:hover { border-color: var(--yellow); transform: translateY(-8px); box-shadow: 0 20px 50px rgba(255,193,7,0.2); }
+        .deal-badge { position: absolute; top: 20px; right: -40px; background: var(--primary); color: white; padding: 6px 45px; transform: rotate(45deg); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .deal-number { font-size: 14px; color: var(--primary); font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; background: var(--yellow); padding: 5px 15px; border-radius: 20px; }
+        .deal-items { list-style: none; margin: 20px 0; }
+        .deal-items li { padding: 8px 0; display: flex; align-items: center; gap: 10px; font-size: 15px; border-bottom: 1px dashed #ddd; }
+        .deal-items li:last-child { border-bottom: none; }
+        .deal-items li::before { content: '✓'; color: var(--primary); font-weight: bold; background: var(--yellow-light); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .deal-price { font-size: 36px; font-weight: 900; color: var(--primary); margin-top: 20px; }
+        .deal-price span { font-size: 16px; font-weight: 400; color: var(--text-light); }
+
+        .birthday-deal { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; border-radius: 24px; padding: 50px; margin: 40px 0; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(211,47,47,0.3); }
+        .birthday-deal::before { content: '🎂'; position: absolute; font-size: 150px; opacity: 0.08; top: -30px; right: -30px; }
+        .birthday-deal h3 { font-size: 36px; margin-bottom: 20px; position: relative; z-index: 1; }
+        .birthday-deal .deal-list { list-style: none; margin: 25px 0; position: relative; z-index: 1; }
+        .birthday-deal .deal-list li { padding: 8px 0; font-size: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .birthday-deal .deal-list li::before { content: '🎁'; }
+        .birthday-deal .price { font-size: 56px; font-weight: 900; margin-top: 25px; position: relative; z-index: 1; color: var(--yellow); }
+
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; }
+        .review-card { background: white; border-radius: 24px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); transition: all 0.3s; border-top: 4px solid var(--yellow); }
+        .review-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.12); }
+        .review-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px; }
+        .reviewer-info { display: flex; align-items: center; gap: 15px; }
+        .reviewer-avatar { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 22px; border: 3px solid var(--yellow); }
+        .reviewer-name { font-weight: 700; color: var(--dark); font-size: 17px; }
+        .reviewer-badge { font-size: 13px; color: var(--text-light); }
+        .review-rating { color: var(--yellow); font-size: 16px; }
+        .review-meta { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; color: var(--text-light); flex-wrap: wrap; }
+        .review-meta span { display: flex; align-items: center; gap: 5px; }
+        .review-text { color: var(--text); line-height: 1.8; font-size: 15px; }
+
+        .contact-section { background: var(--darker); color: white; padding: 100px 25px; position: relative; overflow: hidden; }
+        .contact-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--yellow), var(--primary), var(--yellow)); }
+        .contact-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .contact-info h2 { font-size: 48px; margin-bottom: 20px; color: var(--yellow); }
+        .contact-info p { opacity: 0.8; margin-bottom: 35px; line-height: 1.8; font-size: 17px; }
+        .contact-details { display: flex; flex-direction: column; gap: 25px; }
+        .contact-item { display: flex; align-items: center; gap: 18px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 16px; transition: all 0.3s; }
+        .contact-item:hover { background: rgba(255,193,7,0.1); transform: translateX(5px); }
+        .contact-item i { width: 50px; height: 50px; background: var(--yellow); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--dark); }
+        .contact-item div strong { display: block; margin-bottom: 3px; font-size: 16px; }
+        .contact-item div span { opacity: 0.7; font-size: 15px; }
+        .map-container { background: #222; border-radius: 24px; height: 450px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 3px solid var(--yellow); }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+        .map-placeholder { text-align: center; padding: 40px; }
+        .map-placeholder i { font-size: 70px; color: var(--yellow); margin-bottom: 20px; }
+        .map-placeholder p { opacity: 0.8; font-size: 18px; margin-bottom: 20px; }
+        .map-link { display: inline-block; margin-top: 15px; color: var(--yellow); text-decoration: none; font-weight: 700; font-size: 16px; padding: 12px 30px; border: 2px solid var(--yellow); border-radius: 50px; transition: all 0.3s; }
+        .map-link:hover { background: var(--yellow); color: var(--dark); }
+
+        footer { background: #0a0a0a; color: white; padding: 60px 25px 25px; text-align: center; border-top: 4px solid var(--yellow); }
+        .footer-content { max-width: 1300px; margin: 0 auto; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 42px; margin-bottom: 10px; }
+        .footer-logo span { color: var(--yellow); }
+        .footer-tagline { opacity: 0.7; margin-bottom: 30px; font-size: 18px; letter-spacing: 2px; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin: 30px 0; }
+        .social-links a { width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.3s; font-size: 20px; }
+        .social-links a:hover { background: var(--yellow); color: var(--dark); transform: translateY(-5px); }
+        .footer-bottom { margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.6; font-size: 14px; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
+        .fade-in { opacity: 0; transform: translateY(40px); transition: all 0.7s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .special-tag { background: var(--yellow); color: var(--dark); font-size: 10px; padding: 3px 10px; border-radius: 12px; margin-left: 8px; font-weight: 700; text-transform: uppercase; }
+        .hot-tag { background: var(--primary); color: white; }
+
+        .floating-cta { position: fixed; bottom: 30px; right: 30px; z-index: 999; display: flex; flex-direction: column; gap: 15px; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); transition: all 0.3s; text-decoration: none; border: none; cursor: pointer; }
+        .float-btn:hover { transform: scale(1.1) translateY(-3px); }
+        .float-btn.phone { background: var(--primary); }
+        .float-btn.whatsapp { background: #25d366; }
+        .float-btn.top { background: var(--yellow); color: var(--dark); opacity: 0; transition: opacity 0.3s; }
+        .float-btn.top.visible { opacity: 1; }
+
+        .stats-bar { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 50px 25px; margin: 0; max-width: 100%; }
+        .stats-container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
+        .stat-item { color: white; }
+        .stat-item i { font-size: 40px; color: var(--yellow); margin-bottom: 15px; }
+        .stat-number { font-size: 42px; font-weight: 900; margin-bottom: 5px; }
+        .stat-label { font-size: 15px; opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 65px; left: 0; right: 0; background: var(--dark); flex-direction: column; padding: 25px; gap: 20px; border-top: 3px solid var(--yellow); }
+            .nav-links.active { display: flex; }
+            .mobile-menu { display: block; }
+            .hero-content h1 { font-size: 48px; }
+            .hero-content .tagline { font-size: 18px; }
+            .menu-categories { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .pizza-table { font-size: 13px; }
+            .pizza-table th, .pizza-table td { padding: 12px 8px; }
+            .section { padding: 60px 15px; }
+            .section-header h2 { font-size: 36px; }
+            .food-gallery { grid-template-columns: repeat(2, 1fr); }
+            .gallery-item.large { grid-column: span 2; grid-row: span 1; }
+            .birthday-deal { padding: 30px 20px; }
+            .birthday-deal h3 { font-size: 28px; }
+            .birthday-deal .price { font-size: 40px; }
+            .stats-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .food-gallery { grid-template-columns: 1fr; }
+            .gallery-item.large { grid-column: span 1; }
+            .hero-content h1 { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-coffee"></i>
+                Cafe <span>Leto's</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#deals">Deals</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🌟 Since 2018 · Shahdara's Favorite</div>
+            <h1>Cafe <span>Leto's</span></h1>
+            <p class="tagline">The Taste of Shahdara</p>
+            <div class="rating-badge">
+                <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></span>
+                <span><strong>4.3</strong> &nbsp;185 Google Reviews</span>
+            </div>
+            <div class="hero-buttons">
+                <a href="tel:03293933330" class="btn btn-primary"><i class="fas fa-phone"></i> Order Now</a>
+                <a href="#menu" class="btn btn-outline"><i class="fas fa-utensils"></i> Explore Menu</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Info Bar -->
+    <div class="info-bar">
+        <div class="info-container">
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Main Sheikhupura Shahdara Road, near Al Ghous Hospital, Lahore</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <span>Open Daily · Closes 12:00 AM</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-wallet"></i>
+                <span>Rs 1 – 4,000 per person</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-chair"></i>
+                <span>All You Can Eat · High Chairs · Family Setup</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-item">
+                <i class="fas fa-utensils"></i>
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Menu Items</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-pizza-slice"></i>
+                <div class="stat-number">12</div>
+                <div class="stat-label">Pizza Varieties</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-gift"></i>
+                <div class="stat-number">7</div>
+                <div class="stat-label">Special Deals</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-smile"></i>
+                <div class="stat-number">4.3★</div>
+                <div class="stat-label">Customer Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Gallery -->
+    <section class="section" style="padding-bottom: 40px;">
+        <div class="section-header fade-in">
+            <h2>Our Specialties</h2>
+            <div class="yellow-bar"></div>
+            <p>Authentic flavors crafted with passion and the finest ingredients</p>
+        </div>
+        <div class="food-gallery">
+            <div class="gallery-item large fade-in">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800" alt="Pizza">
+                <div class="gallery-overlay">
+                    <h4>Premium Pizza's</h4>
+                    <span>From Rs 600/-</span>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" alt="Burger">
+                <div class="gallery-overlay">
+                    <h4>Zinger Burger</h4>
+                    <span>Rs 470/-</span>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400" alt="Shawarma">
+                <div class="gallery-overlay">
+                    <h4>Shawarma</h4>
+                    <span>From Rs 280/-</span>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400" alt="Loaded Fries">
+                <div class="gallery-overlay">
+                    <h4>Loaded Fries</h4>
+                    <span>Rs 720/-</span>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400" alt="Steak">
+                <div class="gallery-overlay">
+                    <h4>Stakes</h4>
+                    <span>Rs 1,650/-</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="section" id="menu" style="background: var(--cream); margin: 0; max-width: 100%; padding: 100px 25px;">
+        <div style="max-width: 1300px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>Our Menu</h2>
+                <div class="yellow-bar"></div>
+                <p>From fast food favorites to gourmet delights</p>
+            </div>
+
+            <div class="menu-categories">
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-bread-slice"></i> Sandwich</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Sandwich</span></div><span class="item-price">Rs 660/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Grill Sandwich</span></div><span class="item-price">Rs 610/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Zinger Sandwich</span></div><span class="item-price">Rs 499/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Club Sandwich</span></div><span class="item-price">Rs 570/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-hamburger"></i> Burgers</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Chicken Patty Burger</span></div><span class="item-price">Rs 450/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Zinger Burger</span><span class="special-tag hot-tag">Popular</span></div><span class="item-price">Rs 470/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Grill Burger</span></div><span class="item-price">Rs 610/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Wehshi Burger</span></div><span class="item-price">Rs 830/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Beef Grill Burger</span></div><span class="item-price">Rs 930/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-drumstick-bite"></i> Shawarma</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Shawarma</span></div><span class="item-price">Rs 420/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Zinger Shawarma</span></div><span class="item-price">Rs 470/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Shawarma</span></div><span class="item-price">Rs 380/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Mini Chicken Shawarma</span></div><span class="item-price">Rs 280/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Shawarma Platter</span></div><span class="item-price">Rs 770/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-circle"></i> Paratha's</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Paratha</span></div><span class="item-price">Rs 520/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Paratha</span></div><span class="item-price">Rs 420/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Zinger Paratha</span></div><span class="item-price">Rs 460/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Kabab Paratha</span></div><span class="item-price">Rs 480/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Special Malai Boti Paratha</span></div><span class="item-price">Rs 499/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-mug-hot"></i> Soups</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Hot & Sour Soup</span></div><span class="item-price">Rs 450/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Corn Soup</span></div><span class="item-price">Rs 450/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Soup</span></div><span class="item-price">Rs 550/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-french-fries"></i> Fries</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Loaded Fries</span><span class="special-tag">Best Seller</span></div><span class="item-price">Rs 720/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">French Fries</span></div><span class="item-price">Rs 280/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Garlic Mayo Fries</span></div><span class="item-price">Rs 330/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">BBQ Fries</span></div><span class="item-price">Rs 499/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Plain Fries</span></div><span class="item-price">Rs 390/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-bowl-food"></i> Noodles</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Chowmein</span></div><span class="item-price">Rs 1,430/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Chowmein</span></div><span class="item-price">Rs 1,199/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-coffee"></i> Coffee</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Coffee</span></div><span class="item-price">Rs 690/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Cappuccino</span></div><span class="item-price">Rs 599/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Cold Coffee</span></div><span class="item-price">Rs 630/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Leto's Special Tea</span></div><span class="item-price">Rs 299/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-wine-bottle"></i> Cold Drinks</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Reg Drink</span></div><span class="item-price">Rs 90/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Half Ltr Drink</span></div><span class="item-price">Rs 150/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Liter Drink</span></div><span class="item-price">Rs 200/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">1.5 Liter Drink</span></div><span class="item-price">Rs 250/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Water Small</span></div><span class="item-price">Rs 80/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Water Large</span></div><span class="item-price">Rs 150/-</span></div>
+                    </div>
+                    <div style="padding: 0 30px 20px; text-align: right; font-size: 13px; color: #999; font-style: italic;">* No Discount on Cold Drinks</div>
+                </div>
+            </div>
+
+            <!-- Pizza Tables -->
+            <div class="section-header fade-in" style="margin-top: 80px;">
+                <h2>Pizza Menu</h2>
+                <div class="yellow-bar"></div>
+                <p>Extra Topping: S +50/- | M +100/- | L +150/- | XL +250/-</p>
+            </div>
+
+            <div class="pizza-section fade-in">
+                <h3 style="font-size: 26px; margin-bottom: 5px; color: var(--primary); display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-pizza-slice" style="color: var(--yellow);"></i> Premium Pizza's
+                </h3>
+                <table class="pizza-table">
+                    <thead><tr><th>Pizza</th><th>Small</th><th>Medium</th><th>Large</th><th>XL</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Veggie Lover</strong></td><td class="price">Rs 600/-</td><td class="price">Rs 860/-</td><td class="price">Rs 1,360/-</td><td class="price">Rs 1,800/-</td></tr>
+                        <tr><td><strong>Chicken Tikka</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                        <tr><td><strong>Super Supreme</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                        <tr><td><strong>Chicken Fajita</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                        <tr><td><strong>Peri Peri</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                        <tr><td><strong>Bar BQ</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                        <tr><td><strong>Pepperoni</strong></td><td class="price">Rs 730/-</td><td class="price">Rs 1,350/-</td><td class="price">Rs 1,850/-</td><td class="price">Rs 2,450/-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pizza-section fade-in">
+                <h3 style="font-size: 26px; margin-bottom: 5px; color: var(--primary); display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-crown" style="color: var(--yellow);"></i> Signature Pizza's
+                </h3>
+                <table class="pizza-table">
+                    <thead><tr><th>Pizza</th><th>Small</th><th>Medium</th><th>Large</th><th>XL</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Kabab Crust</strong></td><td class="price">Rs 850/-</td><td class="price">Rs 1,550/-</td><td class="price">Rs 2,100/-</td><td class="price">Rs 2,750/-</td></tr>
+                        <tr><td><strong>Malai Boti</strong></td><td class="price">Rs 850/-</td><td class="price">Rs 1,550/-</td><td class="price">Rs 2,100/-</td><td class="price">Rs 2,750/-</td></tr>
+                        <tr><td><strong>Lazania</strong></td><td class="price">Rs 850/-</td><td class="price">Rs 1,550/-</td><td class="price">Rs 2,100/-</td><td class="price">Rs 2,750/-</td></tr>
+                        <tr><td><strong>Leto's Special</strong><span class="special-tag">Chef's Pick</span></td><td class="price">Rs 850/-</td><td class="price">Rs 1,550/-</td><td class="price">Rs 2,100/-</td><td class="price">Rs 2,750/-</td></tr>
+                        <tr><td><strong>Crown Crust</strong></td><td class="price">Rs 850/-</td><td class="price">Rs 1,550/-</td><td class="price">Rs 2,100/-</td><td class="price">Rs 2,750/-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- More Categories -->
+            <div class="menu-categories" style="margin-top: 30px;">
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-fire"></i> Starters</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Honey Wings (6Pcs)</span></div><span class="item-price">Rs 999/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Dynamite Chicken</span></div><span class="item-price">Rs 1,050/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Drum Sticks (4Pcs)</span></div><span class="item-price">Rs 1,150/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">10 Hot Wings</span></div><span class="item-price">Rs 1,099/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">10 Special Oven Bake Wings</span></div><span class="item-price">Rs 1,099/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">10 Chicken Nuggets</span></div><span class="item-price">Rs 800/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-utensils"></i> Pasta Lover</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Chicken Macaroni Pasta</span></div><span class="item-price">Rs 900/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Alfredo Pasta</span></div><span class="item-price">Rs 1,050/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Penne Sauce Pasta</span></div><span class="item-price">Rs 950/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-drumstick-bite"></i> Main Course</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Chicken Manchurian</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,199/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Black Pepper</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,330/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Chilli Dry</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,250/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Cashew Nut</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,399/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Almond</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,299/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Chicken Shashlik</span><div class="item-desc">Served with Egg Fried Rice & Vegetable Rice</div></div><span class="item-price">Rs 1,000/-</span></div>
+                    </div>
+                </div>
+
+                <div class="menu-card fade-in">
+                    <div class="menu-card-header"><h3><i class="fas fa-cutlery"></i> Stakes</h3></div>
+                    <div class="menu-items">
+                        <div class="menu-item"><div><span class="item-name">Italian</span></div><span class="item-price">Rs 1,650/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Mexican</span></div><span class="item-price">Rs 1,650/-</span></div>
+                        <div class="menu-item"><div><span class="item-name">Mushroom</span></div><span class="item-price">Rs 1,650/-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deals Section -->
+    <section class="section" id="deals" style="background: var(--yellow-light); margin: 0; max-width: 100%; padding: 100px 25px;">
+        <div style="max-width: 1300px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>Special Deals</h2>
+                <div class="yellow-bar"></div>
+                <p>Best value combos for you and your family</p>
+            </div>
+
+            <div class="deals-grid">
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 1</div>
+                    <ul class="deal-items">
+                        <li>1 Zinger Burger</li>
+                        <li>1 Regular Fries</li>
+                        <li>1 Reg Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 830/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 2</div>
+                    <ul class="deal-items">
+                        <li>1 Zinger Burger + 1 Cheese Burger</li>
+                        <li>1 Regular Fries</li>
+                        <li>1 Reg Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 1,250/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 3</div>
+                    <ul class="deal-items">
+                        <li>1 Small Pizza + Zinger Burger</li>
+                        <li>1 Regular Fries</li>
+                        <li>1 Reg Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 1,550/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 4</div>
+                    <ul class="deal-items">
+                        <li>1 Medium Pizza</li>
+                        <li>5 Hot Wings</li>
+                        <li>1 500ml Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 1,800/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 5</div>
+                    <ul class="deal-items">
+                        <li>1 Large Pizza</li>
+                        <li>5 Hot Wings</li>
+                        <li>1 Liter Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 2,400/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 6</div>
+                    <ul class="deal-items">
+                        <li>Zinger Burger + 2 Chicken Pieces</li>
+                        <li>5 Oven Baked Wings</li>
+                        <li>1 Liter Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 1,590/-</div>
+                </div>
+
+                <div class="deal-card fade-in">
+                    <div class="deal-number">Deal 7</div>
+                    <ul class="deal-items">
+                        <li>2 Zinger Burgers</li>
+                        <li>2 Chicken Pieces</li>
+                        <li>1 Fries + 1 Liter Drink</li>
+                    </ul>
+                    <div class="deal-price">Rs 2,190/-</div>
+                </div>
+            </div>
+
+            <div class="birthday-deal fade-in">
+                <h3>🎉 Birthday Special Deal</h3>
+                <ul class="deal-list">
+                    <li>3 Leto's Special Medium Pizzas</li>
+                    <li>2 Pound Cake</li>
+                    <li>1.5 Liter Drink</li>
+                    <li>1 Membership Card</li>
+                    <li>Free Decoration</li>
+                </ul>
+                <div class="price">Rs 10,000/-</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="section" id="reviews" style="background: var(--cream); margin: 0; max-width: 100%; padding: 100px 25px;">
+        <div style="max-width: 1300px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>Customer Reviews</h2>
+                <div class="yellow-bar"></div>
+                <p>What our guests say about their experience</p>
+            </div>
+
+            <div class="reviews-grid">
+                <div class="review-card fade-in">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">MM</div>
+                            <div>
+                                <div class="reviewer-name">Muhammad Muzammil</div>
+                                <div class="reviewer-badge">28 reviews · 35 photos</div>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <span><i class="fas fa-utensils"></i> Dine in</span>
+                        <span><i class="fas fa-tag"></i> Rs 1–500</span>
+                        <span><i class="far fa-clock"></i> 2 years ago</span>
+                    </div>
+                    <p class="review-text">All the Things were best. My First Experience was good. I'll recommend highly this cafe. Family set-up was also very good (Separate). Pricing was also Normal as per Cafe's Environment and Food and Service 🤍.</p>
+                </div>
+
+                <div class="review-card fade-in">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">FS</div>
+                            <div>
+                                <div class="reviewer-name">Fahim Sarwar</div>
+                                <div class="reviewer-badge">Local Guide · 91 reviews · 504 photos</div>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <span><i class="fas fa-utensils"></i> Dine in · Dinner</span>
+                        <span><i class="fas fa-tag"></i> Rs 5,000+</span>
+                        <span><i class="far fa-clock"></i> 1 year ago</span>
+                    </div>
+                    <p class="review-text">I'm visiting 4th time, its really good specially in shahdara, i also try everywhere in shahdra but here the taste is good n environment also good, if u have taste lover than try it cafe leto.</p>
+                </div>
+
+                <div class="review-card fade-in">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">MN</div>
+                            <div>
+                                <div class="reviewer-name">Muhammad Nauman</div>
+                                <div class="reviewer-badge">Local Guide · 15 reviews · 198 photos</div>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <span><i class="fas fa-utensils"></i> Dine in · Dinner</span>
+                        <span><i class="fas fa-tag"></i> Rs 1,500–2,000</span>
+                        <span><i class="far fa-clock"></i> 1 year ago</span>
+                    </div>
+                    <p class="review-text">Very bad service and taste I'm ordering Alfredo pasta and they give me fettuccine Alfredo pasta even they have not in menu list I don't know what is the management of this cafe Leto's if you want to waste your money and time so go happily.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <h2>Visit Us Today</h2>
+                <p>Experience the best taste in Shahdara. Whether you're planning a family dinner, a birthday celebration, or just craving delicious fast food, Cafe Leto's has something for everyone.</p>
+
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Address</strong>
+                            <span>Main Sheikhupura Shahdara Road, near Al Ghous Hospital, Taragarh Shahdara Town, Lahore, 54000</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Phone</strong>
+                            <span>0329 3933330</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Hours</strong>
+                            <span>Open Daily · Closes 12:00 AM</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-store"></i>
+                        <div>
+                            <strong>Located In</strong>
+                            <span>Yasir Broast - Shahdara</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="tel:03293933330" class="btn btn-primary"><i class="fas fa-phone"></i> Call Now</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Cafe+Leto%27s+Shahdara+Lahore" target="_blank" class="btn btn-outline"><i class="fas fa-directions"></i> Get Directions</a>
+                </div>
+            </div>
+
+            <div class="map-container fade-in">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3397.5!2d74.3!3d31.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzFCsDM2JzAwLjAiTiA3NMKwMTgnMDAuMCJF!5e0!3m2!1sen!2s!4v1" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Cafe <span>Leto's</span></div>
+            <p class="footer-tagline">The Taste of Shahdara</p>
+
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/923293933330" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Cafe Leto's. All rights reserved.</p>
+                <p style="margin-top: 8px;">Prices subject to change without notice. All items are subject to availability.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating CTA -->
+    <div class="floating-cta">
+        <a href="tel:03293933330" class="float-btn phone" title="Call Now"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/923293933330" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <button class="float-btn top" id="scrollTop" title="Go to Top" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -60px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            const scrollTop = document.getElementById('scrollTop');
+
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(26, 26, 26, 0.98)';
+                navbar.style.boxShadow = '0 2px 25px rgba(0,0,0,0.4)';
+            } else {
+                navbar.style.background = 'rgba(26, 26, 26, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+
+            if (window.scrollY > 500) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
